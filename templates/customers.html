@@ -3,11 +3,11 @@
 {% block content %}
     <p class="text-3xl font-bold p-2">Customers Information</p>
 
-    <div class="relative overflow-x-auto sm:rounded-lg">
+    <div class="relative overflow-x-auto sm:rounded-lg flex flex-column">
         <!-- search bar -->
-        <div class="p-2 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+        <div class="p-2 flex flex-column sm:flex-row flex-wrap sm:space-y-0 items-center justify-between pb-4 w-full">
             <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
+            <div class="relative border border-gray-300 rounded-lg">
                 <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor"
                          viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -17,10 +17,20 @@
                     </svg>
                 </div>
                 <input type="text" id="table-search"
-                       class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Search">
+                       class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-64 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       placeholder="Search" name="table-search">
+
             </div>
+
+            <!-- submit button -->
+            <button class="block p-2 pe-4 ps-4 text-sm text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg" type="button">Submit</button>
+
         </div>
+
+    </div>
+
+
+    <div class="relative overflow-x-auto sm:rounded-lg">
 
         <!-- table -->
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
