@@ -23,7 +23,20 @@
             </div>
 
             <!-- submit button -->
-            <button class="block p-2 pe-4 ps-4 text-sm text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg" type="button">Submit</button>
+            <a id="submit" class="block p-2 pe-4 ps-4 text-sm text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg border-2 dark:border-gray-600 border-gray-300" type="button">Submit</a>
+
+            <script>
+                let search = document.getElementById('table-search');
+                let submit = document.getElementById('submit');
+
+                submit.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (!search.value)
+                        window.location.href = `/bookings?theme={{ theme }}`
+                    else
+                        window.location.href = `/bookings?search=${search.value}&theme={{ theme }}`
+                })
+            </script>
 
         </div>
 
