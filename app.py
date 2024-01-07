@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -29,19 +29,26 @@ class Booking(database.Model):
 @app.route('/customers')
 def customers():
     theme = request.args.get('theme') or 'light'
-    search = request.args.get('search') or ''
-    data = Guest.query.filter(Guest.guest_name.like(f'%{search}%')).all()
+    search = request.args.get('search') or None
+    id = request.args.get('id') or None
+    data = Guest.query.all()
+    if search:
+        data = filter(lambda x: search in x.guest_name or
+                                search in x.contact_email or
+                                search in x.contact_phone, data)
+    if id:
+        data = filter(lambda x: id == str(x.guest_id), data)
     return render_template('customers.html', theme=theme, guests=data)
 
 
 @app.route('/bookings')
 def bookings():
     theme = request.args.get('theme') or 'light'
-    search = request.args.get('search') or ''
-    data = filter(lambda x: search in x.guest.guest_name or
-                            search in str(x.check_in_date) or
-                            search in str(x.check_out_date) or
-                            search in str(x.total_price), Booking.query.all())
+    search = request.args.get('search') or None
+    data = Booking.query.all()
+    if search:
+        data = filter(lambda x: search in x.guest.guest_name or search in str(x.check_in_date) or search in str(
+            x.check_out_date) or search in str(x.total_price), data)
     return render_template('bookings.html', theme=theme, bookings=data)
 
 
@@ -49,6 +56,20 @@ def bookings():
 def main():
     theme = request.args.get('theme') or 'light'
     return render_template('main.html', theme=theme)
+
+
+@app.route('/delete_booking', methods=['POST'])
+def delete_booking():
+    booking_id = request.json.get('booking_id')
+    try:
+        booking = Booking.query.get(booking_id)
+        database.session.delete(booking)
+        database.session.commit()
+        return jsonify({'success': True})
+    except:
+        print('error')
+        database.session.rollback()
+        return jsonify({'success': False})
 
 
 if __name__ == '__main__':

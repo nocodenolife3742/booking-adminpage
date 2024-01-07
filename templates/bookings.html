@@ -23,7 +23,9 @@
             </div>
 
             <!-- submit button -->
-            <a id="submit" class="block p-2 pe-4 ps-4 text-sm text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg border-2 dark:border-gray-600 border-gray-300" type="button">Submit</a>
+            <a id="submit"
+               class="block p-2 pe-4 ps-4 text-sm text-white bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg border-2 dark:border-gray-600 border-gray-300"
+               type="button">Submit</a>
 
             <script>
                 let search = document.getElementById('table-search');
@@ -41,6 +43,7 @@
         </div>
 
     </div>
+
 
     <div class="relative overflow-x-auto sm:rounded-lg">
         <div class="relative overflow-x-auto sm:rounded-lg">
@@ -70,7 +73,8 @@
                 {% for booking in bookings %}
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-6 py-4">
-                            <a href="/customers?search={{ booking.guest.guest_name }}&theme={{ theme }}" class="font-medium hover:underline">{{ booking.guest.guest_name }}</a>
+                            <a href="/customers?id={{ booking.guest.guest_id }}&theme={{ theme }}"
+                               class="font-medium hover:underline">{{ booking.guest.guest_name }}</a>
                         </td>
                         <td class="px-6 py-4">
                             {{ booking.check_in_date }}
@@ -82,7 +86,31 @@
                             {{ booking.total_price }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                            <button class="font-medium text-red-600 dark:text-red-500 hover:underline" type="button"
+                                    id="delete_{{ booking.booking_id }}">Delete
+                            </button>
+                            <script>
+                                let delete_{{ booking.booking_id }} = document.getElementById('delete_{{ booking.booking_id }}');
+
+
+                                delete_{{ booking.booking_id }}.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    let confirm_delete = confirm('Are you sure you want to delete this booking?');
+                                    if (!confirm_delete)
+                                        return
+                                    fetch('/delete_booking', {
+                                        method: 'POST',
+                                        body: JSON.stringify({booking_id: {{ booking.booking_id }}}),
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    }).then(() => {
+                                        window.location.href = '/bookings?theme={{ theme }}'
+                                    })
+                                })
+
+
+                            </script>
                         </td>
                     </tr>
                 {% endfor %}
@@ -90,4 +118,6 @@
             </table>
         </div>
     </div>
+
+
 {% endblock content %}
