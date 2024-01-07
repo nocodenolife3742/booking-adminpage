@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -38,7 +38,10 @@ def customers():
 def bookings():
     theme = request.args.get('theme') or 'light'
     search = request.args.get('search') or ''
-    data = Booking.query.all()
+    data = filter(lambda x: search in x.guest.guest_name or
+                            search in str(x.check_in_date) or
+                            search in str(x.check_out_date) or
+                            search in str(x.total_price), Booking.query.all())
     return render_template('bookings.html', theme=theme, bookings=data)
 
 

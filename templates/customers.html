@@ -66,7 +66,7 @@
                         {{ guest.guest_name }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ guest.contact_email }}
+                        <a href="mailto:{{ guest.contact_email }}" class="font-medium hover:underline">{{ guest.contact_email }}</a>
                     </td>
                     <td class="px-6 py-4">
                         {{ guest.contact_phone }}
