@@ -67,7 +67,7 @@ def delete_booking():
         database.session.commit()
         return jsonify({'success': True})
     except:
-        print('error')
+        print('error deleting booking')
         database.session.rollback()
         return jsonify({'success': False})
 
