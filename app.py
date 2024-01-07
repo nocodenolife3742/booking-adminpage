@@ -7,15 +7,30 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 database = SQLAlchemy(app)
 
 
+class Guest(database.Model):
+    __tablename__ = 'guest'
+    guest_id = database.Column(database.Integer, primary_key=True)
+    guest_name = database.Column(database.String(255), nullable=False)
+    contact_email = database.Column(database.String(255), nullable=False)
+    contact_phone = database.Column(database.String(255), nullable=False)
+
+
+class Booking(database.Model):
+    __tablename__ = 'booking'
+    booking_id = database.Column(database.Integer, primary_key=True)
+    guest_id = database.Column(database.Integer, database.ForeignKey('guest.guest_id'), nullable=False)
+    check_in_date = database.Column(database.Date, nullable=False)
+    check_out_date = database.Column(database.Date, nullable=False)
+    total_price = database.Column(database.Float, nullable=False)
+
+    guest = database.relationship('Guest', backref='bookings')
+
+
 @app.route('/customers')
 def customers():
     theme = request.args.get('theme') or 'light'
     search = request.args.get('search') or ''
-    print(search)
-    data = [
-        {'name': 'John Doe', 'email': '2h4gK@example.com', 'phone': '123-456-7890'},
-        {'name': 'Keele', 'email': 'bonbonbomb@example.com', 'phone': '114-514-1919810'},
-    ]
+    data = Guest.query.filter(Guest.guest_name.like(f'%{search}%')).all()
     return render_template('customers.html', theme=theme, guests=data)
 
 
@@ -23,11 +38,7 @@ def customers():
 def bookings():
     theme = request.args.get('theme') or 'light'
     search = request.args.get('search') or ''
-    print(search)
-    data = [
-        {'name': 'John Doe', 'room': '101', 'checkin': '2022-01-01', 'checkout': '2022-01-02'},
-        {'name': 'Jane Doe', 'room': '102', 'checkin': '2022-01-03', 'checkout': '2022-01-04'},
-    ]
+    data = Booking.query.all()
     return render_template('bookings.html', theme=theme, bookings=data)
 
 
