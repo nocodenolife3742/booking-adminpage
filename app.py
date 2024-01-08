@@ -38,6 +38,7 @@ class Booking(database.Model):
     check_in_date = database.Column(database.Date, nullable=False)
     check_out_date = database.Column(database.Date, nullable=False)
     total_price = database.Column(database.Float, nullable=False)
+    room_type = database.Column(database.String(255), nullable=False)
 
     guest = database.relationship('Guest', backref='bookings')
 
@@ -92,4 +93,4 @@ def delete_booking():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=4999)

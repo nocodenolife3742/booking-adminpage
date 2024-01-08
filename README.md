@@ -22,7 +22,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-and then visit http://127.0.0.1:5000/ in your browser.
+and then visit http://127.0.0.1:4999/ in your browser.
 
 ## Usage
 
