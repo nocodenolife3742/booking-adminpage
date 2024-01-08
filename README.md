@@ -5,6 +5,7 @@
 - display list of customers and their bookings
 - change theme of the dashboard
 - search and filter bookings
+- log file to track actions
 - link customers information to their bookings
 - hyperlinks to send email and call phone numbers
 
