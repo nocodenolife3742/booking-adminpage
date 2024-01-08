@@ -63,8 +63,10 @@ def bookings():
     search = request.args.get('search') or None
     data = Booking.query.all()
     if search:
-        data = filter(lambda x: search in x.guest.guest_name or search in str(x.check_in_date) or search in str(
-            x.check_out_date) or search in str(x.total_price), data)
+        data = filter(lambda x: search in x.guest.guest_name or
+                                search in str(x.check_in_date) or
+                                search in str(x.check_out_date) or
+                                search in str(x.total_price), data)
     return render_template('bookings.html', theme=theme, bookings=data)
 
 
