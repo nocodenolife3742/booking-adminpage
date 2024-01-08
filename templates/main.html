@@ -2,5 +2,11 @@
 
 {% block content %}
     <p class="text-3xl font-bold p-2">Welcome to Booking Dashboard</p>
-    <p class="text-lg p-2">click on sidebar to see more</p>
+
+    <p class="text-lg p-2">
+        There are
+        <span class="font-bold text-lg">{{ bookings_count }}</span>
+        bookings in total
+    </p>
+    <p class="text-lg p-2">Click on sidebar to see more details</p>
 {% endblock content %}

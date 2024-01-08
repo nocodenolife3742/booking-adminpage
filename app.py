@@ -1,10 +1,26 @@
+import logging
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import yaml
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/hotel'
+
+# configure the SQLAlchemy part
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f.read())
+    user = config['POSTGRESQL_ENV']['POSTGRES_USER']
+    password = config['POSTGRESQL_ENV']['POSTGRES_PASSWORD']
+    host = config['POSTGRESQL_ENV']['POSTGRES_HOST']
+    port = config['POSTGRESQL_ENV']['POSTGRES_PORT']
+    database = config['POSTGRESQL_ENV']['POSTGRES_DB']
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{user}:{password}@{host}:{port}/{database}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 database = SQLAlchemy(app)
+
+# configure the logging part
+app.logger.setLevel('INFO')
+app.logger.addHandler(logging.FileHandler('admin_page.log'))
 
 
 class Guest(database.Model):
@@ -55,7 +71,8 @@ def bookings():
 @app.route('/')
 def main():
     theme = request.args.get('theme') or 'light'
-    return render_template('main.html', theme=theme)
+    bookings_count = Booking.query.count()
+    return render_template('main.html', theme=theme, bookings_count=bookings_count)
 
 
 @app.route('/delete_booking', methods=['POST'])
@@ -67,7 +84,7 @@ def delete_booking():
         database.session.commit()
         return jsonify({'success': True})
     except:
-        print('error deleting booking')
+        app.logger.error('Failed to delete booking', exc_info=True)
         database.session.rollback()
         return jsonify({'success': False})
 

@@ -1,0 +1,6 @@
+POSTGRESQL_ENV:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: hotel
+    POSTGRES_HOST: localhost
+    POSTGRES_PORT: 5432

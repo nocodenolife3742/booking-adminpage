@@ -69,7 +69,7 @@
                         <a href="mailto:{{ guest.contact_email }}" class="font-medium hover:underline">{{ guest.contact_email }}</a>
                     </td>
                     <td class="px-6 py-4">
-                        {{ guest.contact_phone }}
+                        <a href="tel:{{ guest.contact_phone }}" class="font-medium hover:underline">{{ guest.contact_phone }}</a>
                     </td>
                 </tr>
             {% endfor %}
